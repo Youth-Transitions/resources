@@ -91,9 +91,9 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	pl_qan,
-	nullif(pl_disc_code, ''),
-	nullif(pl_sublevno_att, ''),
+	isnull(pl_qan, pl_qan_att),
+	coalesce(nullif(pl_disc_code, ''), nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
 	object_id('NPD_i2."<project number>".PLAMS_Amended_2008')
@@ -113,9 +113,9 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	pl_qan,
-	nullif(pl_disc_code, ''),
-	nullif(pl_sublevno_att, ''),
+	isnull(pl_qan, pl_qan_att),
+	coalesce(nullif(pl_disc_code, ''), nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
 	object_id('NPD_i2."<project number>".PLAMS_Amended_2009')
@@ -135,9 +135,9 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	pl_qan,
-	nullif(pl_disc_code, ''),
-	nullif(pl_sublevno_att, ''),
+	isnull(pl_qan, pl_qan_att),
+	coalesce(nullif(pl_disc_code, ''), nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
 	object_id('NPD_i2."<project number>".PLAMS_Amended_2010')
@@ -157,9 +157,9 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	pl_qan,
-	nullif(pl_disc_code_att, ''),
-	nullif(pl_sublevno_att, ''),
+	isnull(pl_qan, pl_qan_att),
+	coalesce(nullif(pl_disc_code, ''), nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
 	object_id('NPD_i2."<project number>".PLAMS_Amended_2011')
@@ -179,9 +179,10 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	pl_qan,
-	nullif(pl_disc_code, ''),
-	nullif(pl_sublevno_att, ''),
+	-- some of these columns have been missing in some projects...
+	isnull(pl_qan, pl_qan_att),
+	coalesce(nullif(pl_disc_code, ''), nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
 	object_id('NPD_i2."<project number>".PLAMS_Amended_2012')
@@ -201,9 +202,9 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	pl_qan,
-	nullif(pl_disc_code, ''),
-	nullif(pl_sublevno_att, ''),
+	isnull(pl_qan, pl_qan_att),
+	coalesce(nullif(pl_disc_code, ''), nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
 	object_id('NPD_i2."<project number>".PLAMS_Amended_2013')
@@ -223,9 +224,9 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	pl_qan,
-	nullif(pl_disc_code, ''),
-	nullif(pl_sublevno_att, ''),
+	isnull(pl_qan, pl_qan_att),
+	coalesce(nullif(pl_disc_code, ''), nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
 	object_id('NPD_i2."<project number>".PLAMS_Amended_2014')
@@ -245,9 +246,9 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	pl_qan,
-	nullif(pl_disc_code, ''),
-	nullif(pl_sublevno_att, ''),
+	isnull(pl_qan, pl_qan_att),
+	coalesce(nullif(pl_disc_code, ''), nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
 	object_id('NPD_i2."<project number>".PLAMS_Amended_2015')
@@ -267,9 +268,9 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	pl_qan_att,
-	nullif(pl_disc_code_att, ''),
-	nullif(pl_sublevno_att, ''),
+	isnull(pl_qn, pl_qan_att),
+	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
 	object_id('NPD_i2."<project number>".PLAMS_Amended_2016')
@@ -289,9 +290,9 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	pl_qan_att,
-	nullif(pl_disc_code_att, ''),
-	nullif(pl_sublevno_att, ''),
+	isnull(pl_qn, pl_qan_att),
+	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
 	object_id('NPD_i2."<project number>".PLAMS_Amended_2017')
@@ -311,9 +312,9 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	pl_qan_att,
-	nullif(pl_disc_code_att, ''),
-	nullif(pl_sublevno_att, ''),
+	isnull(pl_qn, pl_qan_att),
+	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
 	object_id('NPD_i2."<project number>".PLAMS_Amended_2018')
@@ -333,9 +334,9 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	pl_qan_att,
-	nullif(pl_disc_code_att, ''),
-	nullif(pl_sublevno_att, ''),
+	isnull(pl_qn, pl_qan_att),
+	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
 	object_id('NPD_i2."<project number>".PLAMS_Amended_2019')
@@ -355,9 +356,9 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	pl_qan_att,
-	nullif(pl_disc_code_att, ''),
-	nullif(pl_sublevno_att, ''),
+	isnull(pl_qn, pl_qan_att),
+	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
 	object_id('NPD_i2."<project number>".PLAMS_Amended_2020')
@@ -377,9 +378,9 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	pl_qan_att,
-	nullif(pl_disc_code_att, ''),
-	nullif(pl_sublevno_att, ''),
+	isnull(pl_qn, pl_qan_att),
+	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
 	object_id('NPD_i2."<project number>".PLAMS_Amended_2021')
@@ -399,9 +400,9 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	pl_qan_att,
-	nullif(pl_disc_code_att, ''),
-	nullif(pl_sublevno_att, ''),
+	isnull(pl_qn, pl_qan_att),
+	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
 	object_id('NPD_i2."<project number>".PLAMS_Amended_2022')
