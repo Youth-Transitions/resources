@@ -30,10 +30,6 @@ create table fft.hesa (
 	xqlev6 char(1),
 	xqobtn char(3),
 	xpsr tinyint,
-	xfpe_1 real,
-	xfpe_2 real,
-	xfpe_3 real,
-	xfpe_4 real,
 
 	-- The fft_person_id is a numeric identifier for the individual, assigned by
 	-- FFT and used across all datasets and example scripts.
@@ -63,10 +59,6 @@ create table fft.hesa (
 	xqlev601 as xqlev6,
 	xqobtn01 as xqobtn,
 	xpsr01 as xpsr,
-	xfpe01_1 as xfpe_1,
-	xfpe01_2 as xfpe_2,
-	xfpe01_3 as xfpe_3,
-	sfpe01_4 as xfpe_4
 	
 	primary key(fft_person_id, year, row_id)
 	);
@@ -90,10 +82,6 @@ create table fft.wip#hesa (
 	xqlev6 char(1),
 	xqobtn char(3),
 	xpsr tinyint,
-	xfpe_1 real,
-	xfpe_2 real,
-	xfpe_3 real,
-	xfpe_4 real,
 	source_id int not null,
 	);
 alter table fft.wip#hesa rebuild partition = all with (data_compression = page);
@@ -121,12 +109,6 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
-	-- use of length to force string comparison since nullif(x, '') can turn
-	-- zeros in a numeric column (but not a sting column) null
-	case when len(he_xfpe01_1) > 0 then he_xfpe01_1 end,
-	case when len(he_xfpe01_2) > 0 then he_xfpe01_2 end,
-	case when len(he_xfpe01_3) > 0 then he_xfpe01_3 end,
-	case when len(he_xfpe01_4) > 0 then he_xfpe01_4 end,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2005')
 from
@@ -151,12 +133,6 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
-	-- use of length to force string comparison since nullif(x, '') can turn
-	-- zeros in a numeric column (but not a sting column) null
-	case when len(he_xfpe01_1) > 0 then he_xfpe01_1 end,
-	case when len(he_xfpe01_2) > 0 then he_xfpe01_2 end,
-	case when len(he_xfpe01_3) > 0 then he_xfpe01_3 end,
-	case when len(he_xfpe01_4) > 0 then he_xfpe01_4 end,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2006')
 from
@@ -181,12 +157,6 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
-	-- use of length to force string comparison since nullif(x, '') can turn
-	-- zeros in a numeric column (but not a sting column) null
-	case when len(he_xfpe01_1) > 0 then he_xfpe01_1 end,
-	case when len(he_xfpe01_2) > 0 then he_xfpe01_2 end,
-	case when len(he_xfpe01_3) > 0 then he_xfpe01_3 end,
-	case when len(he_xfpe01_4) > 0 then he_xfpe01_4 end,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2007')
 from
@@ -211,12 +181,6 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
-	-- use of length to force string comparison since nullif(x, '') can turn
-	-- zeros in a numeric column (but not a sting column) null
-	case when len(he_xfpe01_1) > 0 then he_xfpe01_1 end,
-	case when len(he_xfpe01_2) > 0 then he_xfpe01_2 end,
-	case when len(he_xfpe01_3) > 0 then he_xfpe01_3 end,
-	case when len(he_xfpe01_4) > 0 then he_xfpe01_4 end,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2008')
 from
@@ -241,12 +205,6 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
-	-- use of length to force string comparison since nullif(x, '') can turn
-	-- zeros in a numeric column (but not a sting column) null
-	case when len(he_xfpe01_1) > 0 then he_xfpe01_1 end,
-	case when len(he_xfpe01_2) > 0 then he_xfpe01_2 end,
-	case when len(he_xfpe01_3) > 0 then he_xfpe01_3 end,
-	case when len(he_xfpe01_4) > 0 then he_xfpe01_4 end,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2009')
 from
@@ -271,12 +229,6 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
-	-- use of length to force string comparison since nullif(x, '') can turn
-	-- zeros in a numeric column (but not a sting column) null
-	case when len(he_xfpe01_1) > 0 then he_xfpe01_1 end,
-	case when len(he_xfpe01_2) > 0 then he_xfpe01_2 end,
-	case when len(he_xfpe01_3) > 0 then he_xfpe01_3 end,
-	case when len(he_xfpe01_4) > 0 then he_xfpe01_4 end,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2010')
 from
@@ -301,12 +253,6 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
-	-- use of length to force string comparison since nullif(x, '') can turn
-	-- zeros in a numeric column (but not a sting column) null
-	case when len(he_xfpe01_1) > 0 then he_xfpe01_1 end,
-	case when len(he_xfpe01_2) > 0 then he_xfpe01_2 end,
-	case when len(he_xfpe01_3) > 0 then he_xfpe01_3 end,
-	case when len(he_xfpe01_4) > 0 then he_xfpe01_4 end,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2011')
 from
@@ -331,12 +277,6 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
-	-- use of length to force string comparison since nullif(x, '') can turn
-	-- zeros in a numeric column (but not a sting column) null
-	case when len(he_xfpe01_1) > 0 then he_xfpe01_1 end,
-	case when len(he_xfpe01_2) > 0 then he_xfpe01_2 end,
-	case when len(he_xfpe01_3) > 0 then he_xfpe01_3 end,
-	case when len(he_xfpe01_4) > 0 then he_xfpe01_4 end,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2012')
 from
@@ -361,12 +301,6 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
-	-- use of length to force string comparison since nullif(x, '') can turn
-	-- zeros in a numeric column (but not a sting column) null
-	case when len(he_xfpe01_1) > 0 then he_xfpe01_1 end,
-	case when len(he_xfpe01_2) > 0 then he_xfpe01_2 end,
-	case when len(he_xfpe01_3) > 0 then he_xfpe01_3 end,
-	case when len(he_xfpe01_4) > 0 then he_xfpe01_4 end,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2013')
 from
@@ -391,12 +325,6 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
-	-- use of length to force string comparison since nullif(x, '') can turn
-	-- zeros in a numeric column (but not a sting column) null
-	case when len(he_xfpe01_1) > 0 then he_xfpe01_1 end,
-	case when len(he_xfpe01_2) > 0 then he_xfpe01_2 end,
-	case when len(he_xfpe01_3) > 0 then he_xfpe01_3 end,
-	case when len(he_xfpe01_4) > 0 then he_xfpe01_4 end,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2014')
 from
@@ -421,12 +349,6 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
-	-- use of length to force string comparison since nullif(x, '') can turn
-	-- zeros in a numeric column (but not a sting column) null
-	case when len(he_xfpe01_1) > 0 then he_xfpe01_1 end,
-	case when len(he_xfpe01_2) > 0 then he_xfpe01_2 end,
-	case when len(he_xfpe01_3) > 0 then he_xfpe01_3 end,
-	case when len(he_xfpe01_4) > 0 then he_xfpe01_4 end,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2015')
 from
@@ -451,12 +373,6 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
-	-- use of length to force string comparison since nullif(x, '') can turn
-	-- zeros in a numeric column (but not a sting column) null
-	case when len(he_xfpe01_1) > 0 then he_xfpe01_1 end,
-	case when len(he_xfpe01_2) > 0 then he_xfpe01_2 end,
-	case when len(he_xfpe01_3) > 0 then he_xfpe01_3 end,
-	case when len(he_xfpe01_4) > 0 then he_xfpe01_4 end,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2016')
 from
@@ -481,12 +397,6 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
-	-- use of length to force string comparison since nullif(x, '') can turn
-	-- zeros in a numeric column (but not a sting column) null
-	case when len(he_xfpe01_1) > 0 then he_xfpe01_1 end,
-	case when len(he_xfpe01_2) > 0 then he_xfpe01_2 end,
-	case when len(he_xfpe01_3) > 0 then he_xfpe01_3 end,
-	case when len(he_xfpe01_4) > 0 then he_xfpe01_4 end,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2017')
 from
@@ -511,12 +421,6 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
-	-- use of length to force string comparison since nullif(x, '') can turn
-	-- zeros in a numeric column (but not a sting column) null
-	case when len(he_xfpe01_1) > 0 then he_xfpe01_1 end,
-	case when len(he_xfpe01_2) > 0 then he_xfpe01_2 end,
-	case when len(he_xfpe01_3) > 0 then he_xfpe01_3 end,
-	case when len(he_xfpe01_4) > 0 then he_xfpe01_4 end,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2018')
 from
@@ -541,12 +445,6 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
-	-- use of length to force string comparison since nullif(x, '') can turn
-	-- zeros in a numeric column (but not a sting column) null
-	case when len(he_xfpe01_1) > 0 then he_xfpe01_1 end,
-	case when len(he_xfpe01_2) > 0 then he_xfpe01_2 end,
-	case when len(he_xfpe01_3) > 0 then he_xfpe01_3 end,
-	case when len(he_xfpe01_4) > 0 then he_xfpe01_4 end,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2019')
 from
@@ -571,12 +469,6 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
-	-- use of length to force string comparison since nullif(x, '') can turn
-	-- zeros in a numeric column (but not a sting column) null
-	case when len(he_xfpe01_1) > 0 then he_xfpe01_1 end,
-	case when len(he_xfpe01_2) > 0 then he_xfpe01_2 end,
-	case when len(he_xfpe01_3) > 0 then he_xfpe01_3 end,
-	case when len(he_xfpe01_4) > 0 then he_xfpe01_4 end,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2020')
 from
@@ -771,10 +663,6 @@ select
 	xqlev6,
 	xqobtn,
 	xpsr,
-	xfpe_1,
-	xfpe_2,
-	xfpe_3,
-	xfpe_4,
 	fft_person_id,
 	row_number() over (partition by fft_person_id, year order by (select 1)),
 	source_id
