@@ -5,6 +5,10 @@ declare @min_year smallint = 2006;
 -- Maximum year for metrics
 declare @max_year smallint = 2022;
 
+-- Number of "Post-16" months for monthly metrics (starting at the beginning of
+-- the year they are academic age 16)
+declare @post16_month_count tinyint = 24;
+
 --------------------------------------------------------------------------------
 
 if object_id('fft.spell_type') is null
@@ -93,38 +97,61 @@ create table fft.metrics_wide (
 	self_employed_earnings int,
 	self_employed_earnings_2015 real,
 
-	days_in_employment smallint,
-	in_continuous_employment bit,
+	days_in_employment smallint not null,
+	in_continuous_employment bit not null,
 	has_employment as cast(days_in_employment as bit),
-	days_in_employment_acyear smallint,
-	in_continuous_employment_acyear bit,
+	days_in_employment_acyear smallint not null,
+	in_continuous_employment_acyear bit not null,
 	has_employment_acyear as cast(days_in_employment_acyear as bit),
 	earnings_per_day as cast(earnings as real) / nullif(days_in_employment, 0),
 	earnings_per_day_2015 as earnings_2015 / nullif(days_in_employment, 0),
 
-	days_on_in_work_benefits smallint,
-	continuous_in_work_benefits bit,
+	days_on_in_work_benefits smallint not null,
+	continuous_in_work_benefits bit not null,
 	has_in_work_benefits as cast(days_on_in_work_benefits as bit),
-	days_on_in_work_benefits_acyear smallint,
-	continuous_in_work_benefits_acyear bit,
+	days_on_in_work_benefits_acyear smallint not null,
+	continuous_in_work_benefits_acyear bit not null,
 	has_in_work_benefits_acyear as cast(days_on_in_work_benefits_acyear as bit),
-	days_on_out_of_work_benefits smallint,
-	continuous_out_of_work_benefits bit,
+	days_on_out_of_work_benefits smallint not null,
+	continuous_out_of_work_benefits bit not null,
 	has_out_of_work_benefits as cast(days_on_out_of_work_benefits as bit),
-	days_on_out_of_work_benefits_acyear smallint,
-	continuous_out_of_work_benefits_acyear bit,
+	days_on_out_of_work_benefits_acyear smallint not null,
+	continuous_out_of_work_benefits_acyear bit not null,
 	has_out_of_work_benefits_acyear as cast(days_on_out_of_work_benefits_acyear as bit),
 
-	days_in_school smallint,
-	days_in_school_taxyear smallint,
-	days_in_further_education smallint,
-	days_in_further_education_taxyear smallint,
-	days_in_higher_education smallint,
-	days_in_higher_education_taxyear smallint,
+	days_in_school smallint not null,
+	days_in_school_taxyear smallint not null,
+	days_in_further_education smallint not null,
+	days_in_further_education_taxyear smallint not null,
+	days_in_higher_education smallint not null,
+	days_in_higher_education_taxyear smallint not null,
 
 	primary key (fft_person_id, year)
 	);
 else truncate table fft.metrics_wide;
+
+if object_id('fft.metrics_monthly') is null
+create table fft.metrics_monthly (
+	fft_person_id int not null,
+	start_date date not null,
+	end_date as dateadd(d, -1, dateadd(m, 1, start_date)),
+	days_in_school tinyint,
+	days_in_further_education tinyint,
+	days_in_higher_education tinyint,
+	days_in_employment tinyint,
+	days_on_in_work_benefits tinyint,
+	days_on_out_of_work_benefits tinyint,
+	days_in_custody tinyint,
+	days_in_education_nccis tinyint,
+	days_in_training_nncis tinyint,
+	days_in_employment_nccis tinyint,
+	days_self_employed_nccis tinyint,
+	days_active_neet_nccis tinyint,
+	days_inactive_neet_nccis tinyint,
+
+	primary key (fft_person_id, start_date)
+	);
+else truncate table fft.metrics_monthly;
 
 --------------------------------------------------------------------------------
 -- spells
@@ -274,8 +301,9 @@ end;
 
 declare @year varchar(max) = @min_year;
 
--- fft.metrics_wide uses fft.earnings and fft.prices_2015, but if they don't
--- exist, we use empty 'dummy' objects (proxies) so the script will run anyway.
+-- fft.metrics_wide and fft.metrics_monthly use fft.earnings and fft.prices_2015
+-- and fft.nccis_spells, but if they don't exist, we use empty 'dummy' objects
+-- (proxies) so the script will run anyway.
 -- These are cleaned up at the end of the script.
 
 if object_id('fft.earnings') is null
@@ -288,6 +316,15 @@ if object_id('fft.prices_2015') is null
 	exec ('
 	create view fft.prices_2015 as
 	select 0 year, 0 value
+	where 0 = 1
+	;');
+if object_id('fft.nccis_spells') is null
+	exec ('
+	create view fft.nccis_spells (
+	select
+		0 fft_person_id, getdate() start_date, getdate() end_date,
+		0 in_custody, 0 in_education, 0 in_employment, 0 in_training,
+		0 neet_active, 0 neet_inactive, 0 self_employed
 	where 0 = 1
 	;');
 
@@ -371,18 +408,18 @@ begin
 		e.se_value * 100/q.value see2015,
 
 		isnull(ED, 0) days_in_employment,
-		sign(EC / 181) in_continuous_employment,
+		sign(isnull(EC, 0) / 181) in_continuous_employment,
 		isnull(EDA, 0) days_in_employment_acyear,
-		sign(ECA / 181) in_continuous_employment_acyear,
+		sign(isnull(ECA, 0) / 181) in_continuous_employment_acyear,
 
 		isnull(ID, 0) days_on_in_work_benefits,
-		sign(IC / 181) continuous_in_work_benefits,
+		sign(isnull(IC, 0) / 181) continuous_in_work_benefits,
 		isnull(IDA, 0) days_on_in_work_benefits_acyear,
-		sign(ICA / 181) continuous_in_work_benefits_acyear,
+		sign(isnull(ICA, 0) / 181) continuous_in_work_benefits_acyear,
 		isnull(OD, 0) days_on_out_of_work_benefits,
-		sign(OC / 181) continuous_out_of_work_benefits,
+		sign(isnull(OC, 0) / 181) continuous_out_of_work_benefits,
 		isnull(ODA, 0) days_on_out_of_work_benefits_acyear,
-		sign(OCA / 181) continuous_out_of_work_benefits_acyear,
+		sign(isnull(OCA, 0) / 181) continuous_out_of_work_benefits_acyear,
 
 		isnull(SD, 0) days_in_school,
 		isnull(SDT, 0) days_in_school_taxyear,
@@ -438,6 +475,112 @@ begin
 	set @year = @year + 1;
 end
 
+declare @id int = 0;
+declare @max_id int = (select max(fft_person_id) from fft.person_lookup);
+declare @batch_size int = 5500000;
+
+-- looping on person id is more efficient (less data fragmentation), but less
+-- straight-forward; we used year above so the loop was more easily understood,
+-- but year is less useful here
+while @id < @max_id
+begin
+	;with n as (
+		-- this is a recursive CTE; it produces integers in the range [1,@post_month_count]
+		select 1 n
+		union all select n + 1 from n where n < @post16_month_count
+		)
+	insert fft.metrics_monthly
+	select
+		fft_person_id,
+		start_date,
+		isnull(spells.SD, 0),
+		isnull(spells.FD, 0),
+		isnull(spells.HD, 0),
+		isnull(spells.ED, 0),
+		isnull(spells.ID, 0),
+		isnull(spells.OD, 0),
+		isnull(nccis.CD, 0),
+		isnull(nccis.SD, 0),
+		isnull(nccis.FD, 0),
+		isnull(nccis.ED, 0),
+		isnull(nccis.ED1, 0),
+		isnull(nccis.AD, 0),
+		isnull(nccis.ID, 0)
+	from
+		(
+		select
+			*,
+			-- SQL has no modal average; this is one way to calculate it
+			"priority" = row_number() over (
+				partition by fft_person_id
+				order by max_count desc, min_date desc
+				)
+		from
+			(
+			select
+				fft_person_id,
+				min_date = cast(cast(year - academic_age + 15 as varchar(max))+'-09-01' as date),
+				count = count(1),
+				max_count = max(count(1)) over (partition by fft_person_id)
+			from
+				fft.census_details
+			where
+				fft_person_id >= @id
+				and fft_person_id < @id + @batch_size
+			group by
+				fft_person_id,
+				year - academic_age
+			) _
+		) sc
+		outer apply (
+		select
+			start_date = dateadd(m, n - 1, min_date),
+			end_date = dateadd(d, -1, dateadd(m, n, min_date))
+		) dates
+		outer apply (
+		select
+			SD = sum(case type_id when 101 then 1 + datediff(d, min_date, max_date) end),
+			FD = sum(case type_id when 102 then 1 + datediff(d, min_date, max_date) end),
+			HD = sum(case type_id when 103 then 1 + datediff(d, min_date, max_date) end),
+			ED = sum(case type_id when 104 then 1 + datediff(d, min_date, max_date) end),
+			ID = sum(case type_id when 2 then 1 + datediff(d, min_date, max_date) end),
+			OD = sum(case type_id when 1 then 1 + datediff(d, min_date, max_date) end)
+		from
+			fft.spells
+			outer apply (
+			select
+				min_date = case when start_date < dates.start_date then dates.start_date else start_date end,
+				max_date = case when end_date > dates.end_date then dates.end_date else end_date end
+			) _
+		where
+			fft_person_id = sc.fft_person_id
+			and start_date >= dates.end_date
+			and end_date <= dates.start_date
+		) spells
+		outer apply (
+		select
+			CD = sum(case in_custody when 1 then 1 + datediff(d, min_date, max_date) end),
+			SD = sum(case in_education when 1 then 1 + datediff(d, min_date, max_date) end),
+			FD = sum(case in_training when 1 then 1 + datediff(d, min_date, max_date) end),
+			ED = sum(case in_employment when 1 then 1 + datediff(d, min_date, max_date) end),
+			ED1 = sum(case self_employed when 1 then 1 + datediff(d, min_date, max_date) end),
+			AD = sum(case neet_active when 1 then 1 + datediff(d, min_date, max_date) end),
+			ID = sum(case neet_inactive when 1 then 1 + datediff(d, min_date, max_date) end)
+		from
+			fft.nccis_spells
+			outer apply (
+			select
+				min_date = case when start_date < dates.start_date then dates.start_date else start_date end,
+				max_date = case when end_date > dates.end_date then dates.end_date else end_date end
+			) _
+		) nccis
+	where
+		"priority" = 1
+		and year(start_date) between @min_year and @max_year
+	;
+	set @id += @batch_size;
+end
+
 -- If these are views with no data they are probably proxies created earlier in
 -- this script and should be removed. If they weren't, they are still empty so
 -- there's no data lost.
@@ -449,3 +592,7 @@ if object_id('fft.earnings', 'v') is not null
 if object_id('fft.prices_2015', 'v') is not null
 	and not exists (select * from fft.prices_2015)
 	drop view fft.prices_2015;
+
+if object_id('fft.nccis_spells', 'v') is not null
+	and not exists (select * from fft.nccis_spells)
+	drop view fft.nccis_spells;
