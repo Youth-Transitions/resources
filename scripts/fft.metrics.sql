@@ -475,37 +475,16 @@ begin
 	set @year = @year + 1;
 end
 
-declare @id int = 0;
-declare @max_id int = (select max(fft_person_id) from fft.person_lookup);
-declare @batch_size int = 5500000;
-
--- looping on person id is more efficient (less data fragmentation), but less
--- straight-forward; we used year above so the loop was more easily understood,
--- but year is less useful here
-while @id < @max_id
+if object_id('fft.cohort') is null and object_id('fft.census_details') is not null
 begin
-	;with n as (
-		-- this is a recursive CTE; it produces integers in the range [1,@post_month_count]
-		select 1 n
-		union all select n + 1 from n where n < @post16_month_count
-		)
-	insert fft.metrics_monthly
+	create table fft.cohort (
+		fft_person_id int not null primary key,
+		year smallint not null
+		);
+	insert fft.cohort
 	select
 		fft_person_id,
-		start_date,
-		isnull(spells.SD, 0),
-		isnull(spells.FD, 0),
-		isnull(spells.HD, 0),
-		isnull(spells.ED, 0),
-		isnull(spells.ID, 0),
-		isnull(spells.OD, 0),
-		isnull(nccis.CD, 0),
-		isnull(nccis.SD, 0),
-		isnull(nccis.FD, 0),
-		isnull(nccis.ED, 0),
-		isnull(nccis.ED1, 0),
-		isnull(nccis.AD, 0),
-		isnull(nccis.ID, 0)
+		year
 	from
 		(
 		select
@@ -513,13 +492,13 @@ begin
 			-- SQL has no modal average; this is one way to calculate it
 			"priority" = row_number() over (
 				partition by fft_person_id
-				order by max_count desc, min_date desc
+				order by max_count desc, year desc
 				)
 		from
 			(
 			select
 				fft_person_id,
-				min_date = cast(cast(year - academic_age + 15 as varchar(max))+'-09-01' as date),
+				year = year - academic_age - 1, -- an individual has academic age -1 in their birth year
 				count = count(1),
 				max_count = max(count(1)) over (partition by fft_person_id)
 			from
@@ -529,56 +508,100 @@ begin
 				and fft_person_id < @id + @batch_size
 			group by
 				fft_person_id,
-				year - academic_age
+				year - academic_age - 1
 			) _
 		) sc
-		outer apply (
-		select
-			start_date = dateadd(m, n - 1, min_date),
-			end_date = dateadd(d, -1, dateadd(m, n, min_date))
-		) dates
-		outer apply (
-		select
-			SD = sum(case type_id when 101 then 1 + datediff(d, min_date, max_date) end),
-			FD = sum(case type_id when 102 then 1 + datediff(d, min_date, max_date) end),
-			HD = sum(case type_id when 103 then 1 + datediff(d, min_date, max_date) end),
-			ED = sum(case type_id when 104 then 1 + datediff(d, min_date, max_date) end),
-			ID = sum(case type_id when 2 then 1 + datediff(d, min_date, max_date) end),
-			OD = sum(case type_id when 1 then 1 + datediff(d, min_date, max_date) end)
-		from
-			fft.spells
-			outer apply (
-			select
-				min_date = case when start_date < dates.start_date then dates.start_date else start_date end,
-				max_date = case when end_date > dates.end_date then dates.end_date else end_date end
-			) _
-		where
-			fft_person_id = sc.fft_person_id
-			and start_date >= dates.end_date
-			and end_date <= dates.start_date
-		) spells
-		outer apply (
-		select
-			CD = sum(case in_custody when 1 then 1 + datediff(d, min_date, max_date) end),
-			SD = sum(case in_education when 1 then 1 + datediff(d, min_date, max_date) end),
-			FD = sum(case in_training when 1 then 1 + datediff(d, min_date, max_date) end),
-			ED = sum(case in_employment when 1 then 1 + datediff(d, min_date, max_date) end),
-			ED1 = sum(case self_employed when 1 then 1 + datediff(d, min_date, max_date) end),
-			AD = sum(case neet_active when 1 then 1 + datediff(d, min_date, max_date) end),
-			ID = sum(case neet_inactive when 1 then 1 + datediff(d, min_date, max_date) end)
-		from
-			fft.nccis_spells
-			outer apply (
-			select
-				min_date = case when start_date < dates.start_date then dates.start_date else start_date end,
-				max_date = case when end_date > dates.end_date then dates.end_date else end_date end
-			) _
-		) nccis
 	where
 		"priority" = 1
-		and year(start_date) between @min_year and @max_year
 	;
-	set @id += @batch_size;
+end
+
+if object_id('fft.cohort') is not null
+begin
+	declare @id int = 0;
+	declare @max_id int = (select max(fft_person_id) from fft.person_lookup);
+	declare @batch_size int = 5500000;
+	
+	-- looping on person id is more efficient (less data fragmentation), but less
+	-- straight-forward; we used year above so the loop was more easily understood,
+	-- but year is less useful here
+	while @id < @max_id
+	begin
+		;with n as (
+			-- this is a recursive CTE; it produces integers in the range [1,@post_month_count]
+			select 1 n
+			union all select n + 1 from n where n < @post16_month_count
+			)
+		insert fft.metrics_monthly
+		select
+			fft_person_id,
+			start_date,
+			isnull(spells.SD, 0),
+			isnull(spells.FD, 0),
+			isnull(spells.HD, 0),
+			isnull(spells.ED, 0),
+			isnull(spells.ID, 0),
+			isnull(spells.OD, 0),
+			isnull(nccis.CD, 0),
+			isnull(nccis.SD, 0),
+			isnull(nccis.FD, 0),
+			isnull(nccis.ED, 0),
+			isnull(nccis.ED1, 0),
+			isnull(nccis.AD, 0),
+			isnull(nccis.ID, 0)
+		from
+			fft.cohort
+			outer apply (
+			select
+				min_date = cast(cast(year as varchar(max)) + '-09-01' as date)
+			) min_date
+			outer apply (
+			select
+				start_date = dateadd(m, n - 1, min_date),
+				end_date = dateadd(d, -1, dateadd(m, n, min_date))
+			) dates
+			outer apply (
+			select
+				SD = sum(case type_id when 101 then 1 + datediff(d, min_date, max_date) end),
+				FD = sum(case type_id when 102 then 1 + datediff(d, min_date, max_date) end),
+				HD = sum(case type_id when 103 then 1 + datediff(d, min_date, max_date) end),
+				ED = sum(case type_id when 104 then 1 + datediff(d, min_date, max_date) end),
+				ID = sum(case type_id when 2 then 1 + datediff(d, min_date, max_date) end),
+				OD = sum(case type_id when 1 then 1 + datediff(d, min_date, max_date) end)
+			from
+				fft.spells
+				outer apply (
+				select
+					min_date = case when start_date < dates.start_date then dates.start_date else start_date end,
+					max_date = case when end_date > dates.end_date then dates.end_date else end_date end
+				) _
+			where
+				fft_person_id = sc.fft_person_id
+				and start_date >= dates.end_date
+				and end_date <= dates.start_date
+			) spells
+			outer apply (
+			select
+				CD = sum(case in_custody when 1 then 1 + datediff(d, min_date, max_date) end),
+				SD = sum(case in_education when 1 then 1 + datediff(d, min_date, max_date) end),
+				FD = sum(case in_training when 1 then 1 + datediff(d, min_date, max_date) end),
+				ED = sum(case in_employment when 1 then 1 + datediff(d, min_date, max_date) end),
+				ED1 = sum(case self_employed when 1 then 1 + datediff(d, min_date, max_date) end),
+				AD = sum(case neet_active when 1 then 1 + datediff(d, min_date, max_date) end),
+				ID = sum(case neet_inactive when 1 then 1 + datediff(d, min_date, max_date) end)
+			from
+				fft.nccis_spells
+				outer apply (
+				select
+					min_date = case when start_date < dates.start_date then dates.start_date else start_date end,
+					max_date = case when end_date > dates.end_date then dates.end_date else end_date end
+				) _
+			) nccis
+		where
+			year(start_date) between @min_year and @max_year
+		;
+		set @id += @batch_size;
+	end
 end
 
 -- If these are views with no data they are probably proxies created earlier in
@@ -596,3 +619,4 @@ if object_id('fft.prices_2015', 'v') is not null
 if object_id('fft.nccis_spells', 'v') is not null
 	and not exists (select * from fft.nccis_spells)
 	drop view fft.nccis_spells;
+
