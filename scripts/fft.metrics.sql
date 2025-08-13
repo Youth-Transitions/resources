@@ -364,8 +364,8 @@ begin
 		type_id
 	;
 
-	set @start_date = cast(cast(@year - 1 as varchar(max)) + '-04-01' as date);
-	set @end_date = cast(@year + '-03-31' as date);
+	set @start_date = cast(cast(@year - 1 as varchar(max)) + '-04-06' as date);
+	set @end_date = cast(@year + '-04-05' as date);
 
 	insert fft.metrics
 	select
@@ -619,4 +619,5 @@ if object_id('fft.prices_2015', 'v') is not null
 if object_id('fft.nccis_spells', 'v') is not null
 	and not exists (select * from fft.nccis_spells)
 	drop view fft.nccis_spells;
+
 
