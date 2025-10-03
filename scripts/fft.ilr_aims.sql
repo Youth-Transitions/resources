@@ -276,28 +276,53 @@ from
 		lk.external_id
 	) pl
 ;
-insert fft.person_lookup
-select
-	(select max(fft_person_id) from fft.person_lookup)
-	+ row_number() over (order by (select 1)),
-	1 multiplex,
-	null ae_id,
-	null pupil_matching_reference,
-	external_id,
-	null edukey
-from
-	(
-	select distinct external_id
-	from LILR_i2."<project number>".learners
-	where
-		external_id not in (
-		select ilr_external_id
-		from fft.person_lookup
-		where ilr_external_id is not null
-		)
-	) _
-;
-
+-- the learners object is not necessary and not always provided, but is smaller
+-- and faster to use than the aims one.
+if object_id('LILR_i2."<project number>".learners') is not null
+	insert fft.person_lookup
+	select
+		(select max(fft_person_id) from fft.person_lookup)
+		+ row_number() over (order by (select 1)),
+		1 multiplex,
+		null ae_id,
+		null pupil_matching_reference,
+		external_id,
+		null edukey
+	from
+		(
+		select distinct external_id
+		from LILR_i2."<project number>".learners
+		where
+			external_id not in (
+			select ilr_external_id
+			from fft.person_lookup
+			where ilr_external_id is not null
+			)
+		) _
+	;
+else
+	insert fft.person_lookup
+	select
+		(select max(fft_person_id) from fft.person_lookup)
+		+ row_number() over (order by (select 1)),
+		1 multiplex,
+		null ae_id,
+		null pupil_matching_reference,
+		external_id,
+		null edukey
+	from
+		(
+		select distinct external_id
+		from LILR_i2."<project number>".aims
+		where
+			external_id not in (
+			select ilr_external_id
+			from fft.person_lookup
+			where ilr_external_id is not null
+			)
+		) _
+	;
+	
 drop table #lookup;
 
 --------------------------------------------------------------------------------
