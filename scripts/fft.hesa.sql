@@ -562,10 +562,10 @@ select
 	source_id = object_id('hesa_i2."<project number>".hesa_2020')
 from
 	hesa_i2."<project number>".hesa_2020 src
-	left join fft.hecos_to_jacs_lookup lkp1 on lkp1.hecos_code = src.he_xhecos01_1
-	left join fft.hecos_to_jacs_lookup lkp2 on lkp2.hecos_code = src.he_xhecos01_2
-	left join fft.hecos_to_jacs_lookup lkp3 on lkp3.hecos_code = src.he_xhecos01_3
-	left join fft.hecos_to_jacs_lookup lkp4 on lkp4.hecos_code = src.he_xhecos01_4
+	left join fft.hecos_to_jacs_lookup lkp1 on lkp1.hecos_code = src.he_xhecos_1
+	left join fft.hecos_to_jacs_lookup lkp2 on lkp2.hecos_code = src.he_xhecos_2
+	left join fft.hecos_to_jacs_lookup lkp3 on lkp3.hecos_code = src.he_xhecos_3
+	left join fft.hecos_to_jacs_lookup lkp4 on lkp4.hecos_code = src.he_xhecos_4
 where
 	he_pupilmatchingrefanonymous <> ''
 ;
@@ -770,4 +770,5 @@ from
 ;
 
 drop table fft.wip#hesa;
+
 
