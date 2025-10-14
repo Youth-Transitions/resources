@@ -4,7 +4,7 @@ These scripts are intended for use with the LEO (Longitudinal Education Outcomes
 
 Data from the LEO dataset are supplied in a series views in multiple databases on a single SQL Server instance. Each project's views are in a schema identified by project number; you will therefore need to edit the scripts to reference the correct project views.
 
-You can use find and replace (Ctrl H) to replace the text `<project number>` with your projects number. If you are confortable with it, you can use Notepad++ (which is available in this environment) to perform these replacements on all scripts at once: on the Find/Replace prompt, select the "Find in Files" tab and use the "Replace in Files" option (the "Directory" needs to be writeable, so you will need to copy the scripts to somewhere in your Working folder).
+You can use find and replace (Ctrl H) to replace the text `<project number>` with your projects number. If you are comfortable with it, you can use Notepad++ (which is available in this environment) to perform these replacements on all scripts at once: on the Find/Replace prompt, select the "Find in Files" tab and use the "Replace in Files" option (the "Directory" needs to be writeable, so you will need to copy the scripts to somewhere in your Working folder).
 
 ## Data scope
 
