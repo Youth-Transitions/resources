@@ -28,12 +28,16 @@ select
 		max(max_entry_date)
 		),
 	coalesce(
-		min(leaving_date),
+		min(nullif(leaving_date, '9999-12-31')),
 		case when min(entry_date) > min(min_leaving_date) then min(entry_date) end,
-		min(case onroll when 1 then min_leaving_date end),
+		min(min_leaving_date),
 		'9999-12-31'
 		),
-	isnull(max(leaving_date), '9999-12-31'),
+	coalesce(
+		max(nullif(leaving_date, '9999-12-31')),
+		max(max_leaving_date),
+		'9999-12-31'
+		),
 	case min(entry_date) when max(entry_date) then min(entry_date) end,
 	case min(leaving_date) when max(leaving_date) then min(leaving_date) end
 from
@@ -47,10 +51,19 @@ from
 				else cast(year as varchar(max))+'-01-31'
 			end as date),
 		min_leaving_date = cast(
-			case term_id
-				when 1 then cast(year-1 as varchar(max))+'-10-12'
-				when 3 then cast(year as varchar(max))+'-05-12'
-				else cast(year as varchar(max))+'-01-12'
+			case
+				when term_id = 1 and onroll = 0 then cast(year-1 as varchar(max))+'-05-12'
+				when term_id = 1 or term_id = 2 and onroll = 0 then cast(year-1 as varchar(max))+'-10-12'
+				when term_id in (0, 2) or term_id = 3 and onroll = 0 then cast(year as varchar(max))+'-01-12'
+				else cast(year as varchar(max))+'-05-12'
+			end as date),
+		max_leaving_date = cast(
+			case
+				when term_id = 0 then cast(year+1 as varchar(max))+'-05-12'
+				when term_id = 1 and onroll = 0 then cast(year-1 as varchar(max))+'-10-12'
+				when term_id = 1 or term_id = 2 and onroll = 0 then cast(year as varchar(max))+'-01-12'
+				when term_id = 2 or term_id = 3 and onroll = 0 then cast(year as varchar(max))+'-05-12'
+				else cast(year as varchar(max))+'-10-12'
 			end as date)
 		) med
 group by
@@ -179,3 +192,4 @@ update fft.census_dates
 set leaving_date = dateadd(d, datediff(d, min_leaving_date, max_leaving_date) / 2, min_leaving_date)
 where leaving_date is null
 ;
+
