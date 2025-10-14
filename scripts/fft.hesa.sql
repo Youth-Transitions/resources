@@ -31,6 +31,11 @@ create table fft.hesa (
 	xqobtn char(3),
 	xpsr tinyint,
 
+	xjacs_1 char(4),
+	xjacs_2 char(4),
+	xjacs_3 char(4),
+	xjacs_4 char(4),
+
 	-- The fft_person_id is a numeric identifier for the individual, assigned by
 	-- FFT and used across all datasets and example scripts.
 	fft_person_id int not null,
@@ -82,6 +87,10 @@ create table fft.wip#hesa (
 	xqlev6 char(1),
 	xqobtn char(3),
 	xpsr tinyint,
+	xjacs_1 char(4),
+	xjacs_2 char(4),
+	xjacs_3 char(4),
+	xjacs_4 char(4),
 	source_id int not null,
 	);
 alter table fft.wip#hesa rebuild partition = all with (data_compression = page);
@@ -110,6 +119,11 @@ select
 	he_xqobtn01,
 	he_xpsr01,
 
+	he_xjacs01_1,
+	he_xjacs01_2,
+	he_xjacs01_3,
+	he_xjacs01_4,
+
 	source_id = object_id('hesa_i2."<project number>".hesa_2005')
 from
 	hesa_i2."<project number>".hesa_2005 src
@@ -133,6 +147,11 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
+
+	he_xjacs01_1,
+	he_xjacs01_2,
+	he_xjacs01_3,
+	he_xjacs01_4,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2006')
 from
@@ -158,6 +177,11 @@ select
 	he_xqobtn01,
 	he_xpsr01,
 
+	he_xjacs01_1,
+	he_xjacs01_2,
+	he_xjacs01_3,
+	he_xjacs01_4,
+
 	source_id = object_id('hesa_i2."<project number>".hesa_2007')
 from
 	hesa_i2."<project number>".hesa_2007 src
@@ -181,6 +205,11 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
+
+	he_xjacs01_1,
+	he_xjacs01_2,
+	he_xjacs01_3,
+	he_xjacs01_4,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2008')
 from
@@ -206,6 +235,11 @@ select
 	he_xqobtn01,
 	he_xpsr01,
 
+	he_xjacs01_1,
+	he_xjacs01_2,
+	he_xjacs01_3,
+	he_xjacs01_4,
+
 	source_id = object_id('hesa_i2."<project number>".hesa_2009')
 from
 	hesa_i2."<project number>".hesa_2009 src
@@ -229,6 +263,11 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
+
+	he_xjacs01_1,
+	he_xjacs01_2,
+	he_xjacs01_3,
+	he_xjacs01_4,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2010')
 from
@@ -254,6 +293,11 @@ select
 	he_xqobtn01,
 	he_xpsr01,
 
+	he_xjacs01_1,
+	he_xjacs01_2,
+	he_xjacs01_3,
+	he_xjacs01_4,
+
 	source_id = object_id('hesa_i2."<project number>".hesa_2011')
 from
 	hesa_i2."<project number>".hesa_2011 src
@@ -277,6 +321,11 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
+
+	he_xjacs01_1,
+	he_xjacs01_2,
+	he_xjacs01_3,
+	he_xjacs01_4,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2012')
 from
@@ -302,6 +351,11 @@ select
 	he_xqobtn01,
 	he_xpsr01,
 
+	he_xjacs01_1,
+	he_xjacs01_2,
+	he_xjacs01_3,
+	he_xjacs01_4,
+
 	source_id = object_id('hesa_i2."<project number>".hesa_2013')
 from
 	hesa_i2."<project number>".hesa_2013 src
@@ -325,6 +379,11 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
+
+	he_xjacs01_1,
+	he_xjacs01_2,
+	he_xjacs01_3,
+	he_xjacs01_4,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2014')
 from
@@ -350,6 +409,11 @@ select
 	he_xqobtn01,
 	he_xpsr01,
 
+	he_xjacs01_1,
+	he_xjacs01_2,
+	he_xjacs01_3,
+	he_xjacs01_4,
+
 	source_id = object_id('hesa_i2."<project number>".hesa_2015')
 from
 	hesa_i2."<project number>".hesa_2015 src
@@ -373,6 +437,11 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
+
+	he_xjacs01_1,
+	he_xjacs01_2,
+	he_xjacs01_3,
+	he_xjacs01_4,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2016')
 from
@@ -398,6 +467,11 @@ select
 	he_xqobtn01,
 	he_xpsr01,
 
+	he_xjacs01_1,
+	he_xjacs01_2,
+	he_xjacs01_3,
+	he_xjacs01_4,
+
 	source_id = object_id('hesa_i2."<project number>".hesa_2017')
 from
 	hesa_i2."<project number>".hesa_2017 src
@@ -421,6 +495,11 @@ select
 	he_xqlev601,
 	he_xqobtn01,
 	he_xpsr01,
+
+	he_xjacs01_1,
+	he_xjacs01_2,
+	he_xjacs01_3,
+	he_xjacs01_4,
 
 	source_id = object_id('hesa_i2."<project number>".hesa_2018')
 from
@@ -446,6 +525,11 @@ select
 	he_xqobtn01,
 	he_xpsr01,
 
+	he_xjacs01_1,
+	he_xjacs01_2,
+	he_xjacs01_3,
+	he_xjacs01_4,
+
 	source_id = object_id('hesa_i2."<project number>".hesa_2019')
 from
 	hesa_i2."<project number>".hesa_2019 src
@@ -470,9 +554,18 @@ select
 	he_xqobtn01,
 	he_xpsr01,
 
+	lkp1.jacs_code,
+	lkp2.jacs_code,
+	lkp3.jacs_code,
+	lkp4.jacs_code,
+
 	source_id = object_id('hesa_i2."<project number>".hesa_2020')
 from
 	hesa_i2."<project number>".hesa_2020 src
+	left join fft.hecos_to_jacs_lookup lkp1 on lkp1.hecos_code = src.he_xhecos01_1
+	left join fft.hecos_to_jacs_lookup lkp2 on lkp2.hecos_code = src.he_xhecos01_2
+	left join fft.hecos_to_jacs_lookup lkp3 on lkp3.hecos_code = src.he_xhecos01_3
+	left join fft.hecos_to_jacs_lookup lkp4 on lkp4.hecos_code = src.he_xhecos01_4
 where
 	he_pupilmatchingrefanonymous <> ''
 ;
@@ -663,6 +756,10 @@ select
 	xqlev6,
 	xqobtn,
 	xpsr,
+	xjacs_1,
+	xjacs_2,
+	xjacs_3,
+	xjacs_4,
 	fft_person_id,
 	row_number() over (partition by fft_person_id, year order by (select 1)),
 	source_id
@@ -673,3 +770,4 @@ from
 ;
 
 drop table fft.wip#hesa;
+
