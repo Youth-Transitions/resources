@@ -67,6 +67,6 @@ All these sections of walking are tracked and recorded so that we can use this �
 3. <a name="fft-note-3"></a>In fact, this involves two reprojections; one, between differing ellipsoid projections, and a second, onto a plain. For details on map projections and translating between them, see the information provided by Ordinance Survey [here](https://docs.os.uk/more-than-maps/a-guide-to-coordinate-systems-in-great-britain/transverse-mercator-map-projections "Transverse Mercator Map Projections").
 4. <a name="fft-note-4"></a>Distance here is calculated as the sum of the straight-line distance between consecutive nodes within each way.
 5. <a name="fft-note-5"></a>For more information, see the [Wikipedia page](https://en.wikipedia.org/wiki/A*_search_algorithm "A* search algorithm") on A*.
-6. <a name="fft-note-6">A* has worst-case performance and space complexity of O(b<sup>d</sup>), where b is the branching factor (how many edges connect from each vertex) and d the “depth” or number of edges between the start and end points.
-7. <a name="fft-note-7">How small this is will depend on usage, but we have managed to remove more than 95% of vertices in some cases.
-8. <a name="fft-note-8">This is used, for example, in the A* path finding algorithm.
+6. <a name="fft-note-6"></a>A* has worst-case performance and space complexity of O(b<sup>d</sup>), where b is the branching factor (how many edges connect from each vertex) and d the “depth” or number of edges between the start and end points.
+7. <a name="fft-note-7"></a>How small this is will depend on usage, but we have managed to remove more than 95% of vertices in some cases.
+8. <a name="fft-note-8"></a>This is used, for example, in the A* path finding algorithm.
