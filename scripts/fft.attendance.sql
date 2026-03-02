@@ -826,9 +826,10 @@ select
 from
 	fft.wip#attend a
 	left join fft.person_lookup p
-		on	p.pupil_matching_reference = a.pupil_matching_reference
+		on	p.pupil_matching_reference = a.pmr
 	left join fft.laestab_anon s
 		on	s.laestab_anon = a.laestab_anon
 ;
 
 drop table fft.wip#attend;
+
