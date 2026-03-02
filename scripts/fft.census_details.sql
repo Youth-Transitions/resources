@@ -2150,8 +2150,8 @@ from
 	union all select 3
 	) term_id
 	outer apply (
-		select acyob = yob + case when mob >= 9 then 1 else 0 end
-		) acyob
+	select acyob = yob + case when mob >= 9 then 1 else 0 end
+	) acyob
 ;
 
 insert fft.census_details
@@ -2216,7 +2216,7 @@ from
 		mob = pru_monthofbirth
 		) x
 	outer apply (
-		select acyob = yob + case when mob >= 9 then 1 else 0 end
+	select acyob = yob + case when mob >= 9 then 1 else 0 end
 		) acyob
 	left join fft.person_lookup
 		on	pru_pupilmatchingrefanonymous collate Latin1_General_BIN = pupil_matching_reference
@@ -2228,9 +2228,6 @@ from
 		-- if they're already off roll in January, we don't need a May record
 		where isnull(pru_onroll, '') <> '0'
 		) term_id
-	outer apply (
-		select acyob = yob + case when mob >= 9 then 1 else 0 end
-		) acyob
 where
 	-- unlike AP census, PRU census has at least got entry dates so we can use
 	-- those to limit the terms the record is related to
@@ -2239,6 +2236,7 @@ where
 ;
 
 drop table fft.wip#sc;
+
 
 
 
