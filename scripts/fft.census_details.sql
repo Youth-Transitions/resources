@@ -2011,7 +2011,7 @@ begin
 		-- this guard is added against obvious data errors, which are known to
 		-- exist, for example where a pupil appears in census before their year
 		-- of birth (which would cause overflow on the tinyint data type).
-		case when year - acyob between 0 and 120 then year - acyob - 1 end,
+		case when year - acyob between 1 and 120 then year - acyob - 1 end,
 		yob year_of_birth,
 		mob month_of_birth,
 		case left(gender, 1)
@@ -2233,3 +2233,4 @@ where
 ;
 
 drop table fft.wip#sc;
+
