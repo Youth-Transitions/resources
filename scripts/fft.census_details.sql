@@ -2092,7 +2092,7 @@ select
 	ap_pupilmatchingrefanonymous,
 	year,
 	term_id,
-	case when year - acyob between 0 and 120 then year - acyob - 1 end,
+	case when year - acyob between 1 and 120 then year - acyob - 1 end,
 	yob year_of_birth,
 	mob month_of_birth,
 	case left(ap_gender, 1)
@@ -2156,7 +2156,7 @@ select
 	pru_pupilmatchingrefanonymous,
 	year,
 	term_id,
-	case when year - acyob between 0 and 120 then year - acyob - 1 end,
+	case when year - acyob between 1 and 120 then year - acyob - 1 end,
 	yob year_of_birth,
 	mob month_of_birth,
 	case left(pru_gender, 1)
@@ -2233,4 +2233,5 @@ where
 ;
 
 drop table fft.wip#sc;
+
 
