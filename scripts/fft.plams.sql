@@ -9,6 +9,9 @@
 --     <project number>
 -- to the appropriate value.
 
+-- Note: this version of the script prioritises the attained qualification,
+-- rather than the qualification started.
+
 if schema_id('fft') is null
 	exec ('create schema fft;');
 
@@ -91,8 +94,8 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	isnull(pl_qan, pl_qan_att),
-	coalesce(nullif(pl_disc_code, ''), nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	isnull(pl_qan_att, pl_qan),
+	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code, ''), nullif(pl_disc_code_ref, '')),
 	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
@@ -113,8 +116,8 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	isnull(pl_qan, pl_qan_att),
-	coalesce(nullif(pl_disc_code, ''), nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	isnull(pl_qan_att, pl_qan),
+	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code, ''), nullif(pl_disc_code_ref, '')),
 	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
@@ -135,8 +138,8 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	isnull(pl_qan, pl_qan_att),
-	coalesce(nullif(pl_disc_code, ''), nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	isnull(pl_qan_att, pl_qan),
+	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code, ''), nullif(pl_disc_code_ref, '')),
 	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
@@ -157,8 +160,8 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	isnull(pl_qan, pl_qan_att),
-	coalesce(nullif(pl_disc_code, ''), nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	isnull(pl_qan_att, pl_qan),
+	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code, ''), nullif(pl_disc_code_ref, '')),
 	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
@@ -180,8 +183,8 @@ select
 		else 0
 	end,
 	-- some of these columns have been missing in some projects...
-	isnull(pl_qan, pl_qan_att),
-	coalesce(nullif(pl_disc_code, ''), nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	isnull(pl_qan_att, pl_qan),
+	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code, ''), nullif(pl_disc_code_ref, '')),
 	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
@@ -202,8 +205,8 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	isnull(pl_qan, pl_qan_att),
-	coalesce(nullif(pl_disc_code, ''), nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	isnull(pl_qan_att, pl_qan),
+	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code, ''), nullif(pl_disc_code_ref, '')),
 	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
@@ -224,8 +227,8 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	isnull(pl_qan, pl_qan_att),
-	coalesce(nullif(pl_disc_code, ''), nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	isnull(pl_qan_att, pl_qan),
+	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code, ''), nullif(pl_disc_code_ref, '')),
 	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
@@ -246,8 +249,8 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	isnull(pl_qan, pl_qan_att),
-	coalesce(nullif(pl_disc_code, ''), nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
+	isnull(pl_qan_att, pl_qan),
+	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code, ''), nullif(pl_disc_code_ref, '')),
 	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
 	case when pl_traineeship in ('0', '1') then pl_traineeship end,
@@ -268,7 +271,7 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	isnull(pl_qn, pl_qan_att),
+	isnull(pl_qan_att, pl_qn),
 	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
 	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
@@ -290,7 +293,7 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	isnull(pl_qn, pl_qan_att),
+	isnull(pl_qan_att, pl_qn),
 	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
 	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
@@ -312,7 +315,7 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	isnull(pl_qn, pl_qan_att),
+	isnull(pl_qan_att, pl_qn),
 	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
 	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
@@ -334,7 +337,7 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	isnull(pl_qn, pl_qan_att),
+	isnull(pl_qan_att, pl_qn),
 	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
 	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
@@ -356,7 +359,7 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	isnull(pl_qn, pl_qan_att),
+	isnull(pl_qan_att, pl_qn),
 	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
 	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
@@ -378,7 +381,7 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	isnull(pl_qn, pl_qan_att),
+	isnull(pl_qan_att, pl_qn),
 	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
 	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
@@ -400,7 +403,7 @@ select
 		when pl_learningplannedenddate <> '' then 1
 		else 0
 	end,
-	isnull(pl_qn, pl_qan_att),
+	isnull(pl_qan_att, pl_qn),
 	coalesce(nullif(pl_disc_code_att, ''), nullif(pl_disc_code_ref, '')),
 	coalesce(nullif(pl_sublevno_att, ''), nullif(pl_sublevno_ref, '')),
 	nullif(pl_grade_att, ''),
